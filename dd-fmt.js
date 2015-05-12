@@ -1,7 +1,7 @@
 var through2 = require('through2')
 var _ = require('lodash')
 
-var filter = through2(function (chunk, enc, callback) {
+var progress = through2(function (chunk, enc, callback) {
   var self = this
   var buf = chunk.toString()
   var lines = buf.split('\n')
@@ -21,4 +21,25 @@ var filter = through2(function (chunk, enc, callback) {
   callback()
 })
 
-module.exports = filter
+var error = through2(function(chunk, enc, callback) {
+  var self = this
+  var buf = chunk.toString()
+  var lines = buf.split('\n')
+  var capture = /dd: /
+
+  var updates = _.compact(_.map(lines, function (line) {
+    var match = capture.exec(line);
+    if (match) {
+      return match.input
+    }
+  }))
+
+  _.forEach(updates, function (update) {
+    self.push(update);
+  })
+
+  callback()
+});
+
+module.exports.Progress = progress
+module.exports.Error = error

@@ -2,7 +2,8 @@ var spawn = require('child_process').spawn
 var ProgressBar = require('progress')
 var exec = require('child_process').exec
 var fs = require('fs');
-var fmt = require('./dd-fmt.js')
+var fmtProgress = require('./dd-fmt.js').Progress
+var fmtError = require('./dd-fmt.js').Error
 
 if (process.getuid() != 0) {
   console.log('You must run dd-node as root')
@@ -20,7 +21,7 @@ var inputFile = inf.split('=').pop()
 
 fs.stat(inputFile, function(err, stats) {
 
-  if (err) throw err
+  if (err) stats = {};
 
   var size = stats.size || Number.MAX_VALUE
   var oldTotal = 0
@@ -28,9 +29,10 @@ fs.stat(inputFile, function(err, stats) {
   var progress = 0
 
   var dd = spawn('dd', [bs, inf, of], { 'stdio' : 'pipe' })
-  dd.stderr.pipe(fmt)
+  dd.stderr.pipe(fmtProgress)
+  dd.stderr.pipe(fmtError)
 
-  var bar = new ProgressBar('  transfering [:bar] :percent elapsed: :elapsed sec', {
+  var bar = new ProgressBar('  transfering [:bar] :percent elapsed: :elapseds', {
     complete: '=',
     incomplete: ' ',
     width: 20,
@@ -41,14 +43,21 @@ fs.stat(inputFile, function(err, stats) {
     exec('sudo kill -SIGINFO ' + dd.pid)
   }, 1000)
 
-  fmt.on('data', function(data) {
+  fmtProgress.on('data', function(data) {
     totalTransferredBytes = parseInt(data.toString())
     progress = totalTransferredBytes - oldTotal
     bar.tick(progress)
     oldTotal = totalTransferredBytes
   })
 
-  fmt.on('end', function() {
+  fmtProgress.on('end', function() {
     t.unref()
+  })
+
+  fmtError.on('data', function(data) {
+    if (dd.exitCode !== 0) {
+      console.log(data.toString())
+      process.exit(0)
+    }
   })
 })
