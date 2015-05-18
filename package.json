@@ -1,12 +1,12 @@
 {
   "name": "dd-status",
-  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A wrapper around dd with prettier output",
+  "main": "dd-node.js",
+  "bin": "dd-node.js",
   "scripts": {
-    "test": "node app.js bs=1M if=/dev/random of=/dev/null",
-    "start": "node app.js"
+    "test": "node dd-node.js bs=1M if=/dev/random of=/dev/null",
+    "start": "node dd-node.js"
   },
   "author": "Giovanni Garufi <nazrhom@gmail.com>",
   "license": "ISC",
