@@ -25,10 +25,10 @@ var error = through2(function(chunk, enc, callback) {
   var self = this
   var buf = chunk.toString()
   var lines = buf.split('\n')
-  var capture = /dd: /
+  var expr = /dd: /
 
   var updates = _.compact(_.map(lines, function (line) {
-    if (line.test(capture)) {
+    if (expr.test(line)) {
       return line
     }
   }))
