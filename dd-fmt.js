@@ -28,9 +28,8 @@ var error = through2(function(chunk, enc, callback) {
   var capture = /dd: /
 
   var updates = _.compact(_.map(lines, function (line) {
-    var match = capture.exec(line)
-    if (match) {
-      return match.input
+    if (line.test(capture)) {
+      return line
     }
   }))
 
