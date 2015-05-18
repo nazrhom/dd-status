@@ -1,13 +1,19 @@
 # dd-status
 
-Run dd and get some info on its status.
+
 
 ## Usage
 
-To test run 
+To install
 ```
-npm start bs=1M if=/dev/random of=/dev/null
+npm install dd-status -g
 ```
-or whatever bs settings you fancy.
 
-Be careful the program expects the arguments in the order used in the previous example and does not currently support any other dd option
+Now you can run 
+```
+dd-node bs=1M if=input_file of=outupt_file
+```
+or whatever bs settings you fancy and get a progress bar for your copy.
+
+
+This is only tested on OSX, different OS use different signals for dd so it will currently not work on platforms. Support for more is coming soon, any kind of contribution is apreciated.
