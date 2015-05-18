@@ -29,7 +29,7 @@ fs.stat(inputFile, function(err, stats) {
   dd.stderr.pipe(fmtProgress)
   dd.stderr.pipe(fmtError)
 
-  var bar = new ProgressBar('  transfering [:bar] :percent elapsed: :elapseds', {
+  var bar = new ProgressBar('  copying [:bar] :percent elapsed: :elapseds', {
     complete: '=',
     incomplete: ' ',
     width: 20,
