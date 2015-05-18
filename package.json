@@ -1,6 +1,6 @@
 {
   "name": "dd-status",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A wrapper around dd with prettier output",
   "main": "dd-node.js",
   "bin": "dd-node.js",
