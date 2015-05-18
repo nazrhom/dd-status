@@ -1,7 +1,7 @@
 var spawn = require('child_process').spawn
 var ProgressBar = require('progress')
 var exec = require('child_process').exec
-var fs = require('fs');
+var fs = require('fs')
 var fmtProgress = require('./dd-fmt.js').Progress
 var fmtError = require('./dd-fmt.js').Error
 
@@ -21,7 +21,7 @@ var inputFile = inf.split('=').pop()
 
 fs.stat(inputFile, function(err, stats) {
 
-  if (err) stats = {};
+  if (err) stats = {}
 
   var size = stats.size || Number.MAX_VALUE
   var oldTotal = 0
@@ -56,6 +56,7 @@ fs.stat(inputFile, function(err, stats) {
 
   fmtError.on('data', function(data) {
     if (dd.exitCode !== 0) {
+      console.log('\n')
       console.log(data.toString())
       process.exit(0)
     }

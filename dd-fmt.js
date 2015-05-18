@@ -8,14 +8,14 @@ var progress = through2(function (chunk, enc, callback) {
   var capture = /([\d]+) bytes/
 
   var updates = _.compact(_.map(lines, function (line) {
-    var match = capture.exec(line);
+    var match = capture.exec(line)
     if (match) {
       return match[1]
     }
   }))
 
   _.forEach(updates, function (update) {
-    self.push(update);
+    self.push(update)
   })
 
   callback()
@@ -28,14 +28,14 @@ var error = through2(function(chunk, enc, callback) {
   var capture = /dd: /
 
   var updates = _.compact(_.map(lines, function (line) {
-    var match = capture.exec(line);
+    var match = capture.exec(line)
     if (match) {
       return match.input
     }
   }))
 
   _.forEach(updates, function (update) {
-    self.push(update);
+    self.push(update)
   })
 
   callback()
