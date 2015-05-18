@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var _ = require('lodash')
 var ProgressBar = require('progress')
 var exec = require('child_process').exec

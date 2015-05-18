@@ -2,11 +2,11 @@
   "name": "dd-status",
   "version": "1.0.1",
   "description": "A wrapper around dd with prettier output",
-  "main": "dd-node.js",
-  "bin": "dd-node.js",
+  "main": "dd-status.js",
+  "bin": "dd-status.js",
   "scripts": {
-    "test": "node dd-node.js bs=1M if=/dev/random of=/dev/null",
-    "start": "node dd-node.js"
+    "test": "node dd-status.js bs=1M if=/dev/random of=/dev/null",
+    "start": "node dd-status.js"
   },
   "author": "Giovanni Garufi <nazrhom@gmail.com>",
   "license": "ISC",
