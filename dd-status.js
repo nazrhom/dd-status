@@ -7,7 +7,7 @@ var spawn = require('child_process').spawn
 var fs = require('fs')
 var fmtProgress = require('./dd-fmt.js').Progress
 var fmtError = require('./dd-fmt.js').Error
-
+var dd;
 
 if (process.getuid() != 0) {
   console.log('You must run dd-node as root')
@@ -27,7 +27,7 @@ fs.stat(inputFile, function(err, stats) {
   var oldTotal = 0
   var progress = 0
 
-  var dd = spawn('dd', args, { 'stdio' : 'pipe' })
+  dd = spawn('dd', args, { 'stdio' : 'pipe' })
   dd.stderr.pipe(fmtProgress)
   dd.stderr.pipe(fmtError)
 
@@ -38,19 +38,13 @@ fs.stat(inputFile, function(err, stats) {
     total: size
   })
 
-  var t = setInterval(function() {
-    exec('sudo kill -SIGINFO ' + dd.pid)
-  }, 1000)
+  setInterval(sendSignal, 1000).unref()
 
   fmtProgress.on('data', function(data) {
     totalTransferredBytes = parseInt(data.toString())
     progress = totalTransferredBytes - oldTotal
     bar.tick(progress)
     oldTotal = totalTransferredBytes
-  })
-
-  fmtProgress.on('end', function() {
-    t.unref()
   })
 
   fmtError.on('data', function(data) {
@@ -67,4 +61,8 @@ function findInputFile(args) {
   return _.find(args, function(arg) {
     return arg.match(/if=[.]+/)
   }) || ''
+}
+
+function sendSignal() {
+  exec('sudo kill -SIGINFO ' + dd.pid)
 }
