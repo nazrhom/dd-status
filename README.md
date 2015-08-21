@@ -11,7 +11,7 @@ npm install dd-status -g
 
 Now you can run 
 ```
-dd-node bs=1M if=input_file of=outupt_file
+dd-status bs=1M if=input_file of=outupt_file
 ```
 or whatever bs settings you fancy and get a progress bar for your copy.
 
